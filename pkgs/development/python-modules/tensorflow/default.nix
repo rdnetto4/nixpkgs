@@ -31,7 +31,7 @@ let
 
   tfFeature = x: if x then "1" else "0";
 
-  version = "1.8.0";
+  version = "1.7.1";
 
   pkg = buildBazelPackage rec {
     name = "tensorflow-build-${version}";
@@ -103,7 +103,7 @@ let
       '';
 
       installPhase = ''
-        sed -i 's,.*bdist_wheel.*,cp -rL . "$out"; exit 0,' bazel-bin/tensorflow/tools/pip_package/build_pip_package 
+        sed -i 's,.*bdist_wheel.*,cp -rL . "$out"; exit 0,' bazel-bin/tensorflow/tools/pip_package/build_pip_package
         bazel-bin/tensorflow/tools/pip_package/build_pip_package $PWD/dist
       '';
     };

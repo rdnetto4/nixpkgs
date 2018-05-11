@@ -19,7 +19,7 @@
 
 buildPythonPackage rec {
   pname = "tensorflow";
-  version = "1.8.0";
+  version = "1.7.1";
   format = "wheel";
 
   src = fetchurl {
