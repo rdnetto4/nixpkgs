@@ -31,7 +31,7 @@ let
 
   tfFeature = x: if x then "1" else "0";
 
-  version = "1.8.0";
+  version = "1.7.1";
 
   pkg = buildBazelPackage rec {
     name = "tensorflow-build-${version}";
@@ -40,7 +40,7 @@ let
       owner = "tensorflow";
       repo = "tensorflow";
       rev = "v${version}";
-      sha256 = "18hydad4d61qg5ji7frcbmhb1l09s122n9hl7ic0nqq6j786acvv";
+      sha256 = "1wh3hyc16wmchjzlz345n5d8aysymy587i94nss140asqnk7ravc";
     };
 
     nativeBuildInputs = [ swig which ];
@@ -91,7 +91,7 @@ let
         rm -rf $bazelOut/external/{bazel_tools,\@bazel_tools.marker,local_*,\@local_*}
       '';
 
-      sha256 = "1fczzfhcg1va18rdmj9zgc11ah619pl8bny6hw51c51kbxr9fskc";
+      sha256 = "0xliknr6790a3pqmpwnzf03l5hxmj652g81cyliw95kb11jmvqvq";
     };
 
     buildAttrs = {
@@ -103,7 +103,7 @@ let
       '';
 
       installPhase = ''
-        sed -i 's,.*bdist_wheel.*,cp -rL . "$out"; exit 0,' bazel-bin/tensorflow/tools/pip_package/build_pip_package 
+        sed -i 's,.*bdist_wheel.*,cp -rL . "$out"; exit 0,' bazel-bin/tensorflow/tools/pip_package/build_pip_package
         bazel-bin/tensorflow/tools/pip_package/build_pip_package $PWD/dist
       '';
     };

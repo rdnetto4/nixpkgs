@@ -19,12 +19,12 @@
 
 buildPythonPackage rec {
   pname = "tensorflow";
-  version = "1.8.0";
+  version = "1.7.1";
   format = "wheel";
 
   src = fetchurl {
     url = "https://storage.googleapis.com/tensorflow/mac/cpu/tensorflow-${version}-py3-none-any.whl";
-    sha256 = "0j25xwb2ghppi7w2y98vcnhn5lhp0nrq1qh23dmk81jgkizn6g1p";
+    sha256 = "0s5dy956jvwazqflc90v15i912zvhwsbzlf0cl8k7isq52j6g3kp";
   };
 
   propagatedBuildInputs = [ numpy six protobuf absl-py ]
