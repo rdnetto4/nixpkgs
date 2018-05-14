@@ -13,7 +13,7 @@ stdenv.mkDerivation rec {
     description = "Build tool that builds code quickly and reliably";
     license = licenses.asl20;
     maintainers = [ maintainers.philandstuff ];
-    platforms = platforms.linux;
+    platforms = platforms.linux ++ platforms.darwin;
   };
 
   name = "bazel-${version}";
@@ -25,7 +25,7 @@ stdenv.mkDerivation rec {
 
   sourceRoot = ".";
 
-  patches = lib.optional enableNixHacks ./nix-hacks.patch;
+  patches = [lib.optional enableNixHacks ./nix-hacks.patch] ++ [lib.optional stdenv.isDarwin ./0001-Use-libc-on-OSX.patch];
 
   # Bazel expects several utils to be available in Bash even without PATH. Hence this hack.
 

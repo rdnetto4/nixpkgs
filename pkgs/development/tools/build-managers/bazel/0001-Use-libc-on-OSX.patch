@@ -1,0 +1,80 @@
+From 32b2f11f697f97f1b84941711a0be8a7d0919379 Mon Sep 17 00:00:00 2001
+From: Reuben D'Netto <rdnetto@atlassian.com>
+Date: Mon, 14 May 2018 13:43:30 +1000
+Subject: [PATCH] Use libc++ on OSX
+
+---
+ tools/cpp/CROSSTOOL                | 8 ++++----
+ tools/cpp/unix_cc_configure.bzl    | 2 +-
+ tools/cpp/windows_cc_configure.bzl | 2 +-
+ 3 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/tools/cpp/CROSSTOOL b/tools/cpp/CROSSTOOL
+index d6a3a53c88..992c044589 100644
+--- a/tools/cpp/CROSSTOOL
++++ b/tools/cpp/CROSSTOOL
+@@ -111,7 +111,7 @@ toolchain {
+   tool_path { name: "dwp" path: "/usr/bin/dwp" }
+   tool_path { name: "gcc" path: "/usr/bin/gcc" }
+   cxx_flag: "-std=c++0x"
+-  linker_flag: "-lstdc++"
++  linker_flag: "-lc++"
+   linker_flag: "-B/usr/bin/"
+ 
+   # TODO(bazel-team): In theory, the path here ought to exactly match the path
+@@ -225,7 +225,7 @@ toolchain {
+   tool_path { name: "dwp" path: "/usr/bin/dwp" }
+   tool_path { name: "gcc" path: "osx_cc_wrapper.sh" }
+   cxx_flag: "-std=c++0x"
+-  linker_flag: "-lstdc++"
++  linker_flag: "-lc++"
+   linker_flag: "-undefined"
+   linker_flag: "dynamic_lookup"
+   linker_flag: "-headerpad_max_install_names"
+@@ -323,7 +323,7 @@ toolchain {
+   tool_path { name: "dwp" path: "/usr/bin/dwp" }
+   tool_path { name: "gcc" path: "/usr/bin/clang" }
+   cxx_flag: "-std=c++0x"
+-  linker_flag: "-lstdc++"
++  linker_flag: "-lc++"
+   linker_flag: "-B/usr/bin/"
+ 
+   # TODO(bazel-team): In theory, the path here ought to exactly match the path
+@@ -543,7 +543,7 @@ toolchain {
+   # Use gcc instead of g++ so that C will compile correctly.
+   tool_path { name: "gcc" path: "C:/tools/msys64/usr/bin/gcc" }
+   cxx_flag: "-std=gnu++0x"
+-  linker_flag: "-lstdc++"
++  linker_flag: "-lc++"
+   # TODO(bazel-team): In theory, the path here ought to exactly match the path
+   # used by gcc. That works because bazel currently doesn't track files at
+   # absolute locations and has no remote execution, yet. However, this will need
+diff --git a/tools/cpp/unix_cc_configure.bzl b/tools/cpp/unix_cc_configure.bzl
+index b609f99b61..28f296572c 100644
+--- a/tools/cpp/unix_cc_configure.bzl
++++ b/tools/cpp/unix_cc_configure.bzl
+@@ -255,7 +255,7 @@ def _crosstool_content(repository_ctx, cc, cpu_value, darwin):
+               # Have gcc return the exit code from ld.
+               repository_ctx, cc, "-pass-exit-codes")
+           ) + split_escaped(
+-                  get_env_var(repository_ctx, "BAZEL_LINKOPTS", "-lstdc++:-lm", False), ":"),
++                  get_env_var(repository_ctx, "BAZEL_LINKOPTS", "-lc++:-lm", False), ":"),
+       "cxx_builtin_include_directory": escaped_cxx_include_directories,
+       "objcopy_embed_flag": ["-I", "binary"],
+       "unfiltered_cxx_flag":
+diff --git a/tools/cpp/windows_cc_configure.bzl b/tools/cpp/windows_cc_configure.bzl
+index 605760d817..1b13fef0e4 100644
+--- a/tools/cpp/windows_cc_configure.bzl
++++ b/tools/cpp/windows_cc_configure.bzl
+@@ -57,7 +57,7 @@ def _get_escaped_windows_msys_crosstool_content(repository_ctx, use_mingw = Fals
+       '   tool_path { name: "dwp" path: "%s%s/bin/dwp" }\n' % (escaped_msys_root, prefix) +
+       '   tool_path { name: "gcc" path: "%s%s/bin/gcc" }\n' % (escaped_msys_root, prefix) +
+       '   cxx_flag: "-std=gnu++0x"\n' +
+-      '   linker_flag: "-lstdc++"\n' +
++      '   linker_flag: "-lc++"\n' +
+       '   cxx_builtin_include_directory: "%s%s/"\n' % (escaped_msys_root, prefix) +
+       '   tool_path { name: "gcov" path: "%s%s/bin/gcov" }\n' % (escaped_msys_root, prefix) +
+       '   tool_path { name: "ld" path: "%s%s/bin/ld" }\n' % (escaped_msys_root, prefix) +
+-- 
+2.17.0
+
