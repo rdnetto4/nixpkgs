@@ -48,7 +48,7 @@ stdenv.mkDerivation rec {
   sourceRoot = ".";
 
   patches =
-    lib.optional enableNixHacks ./nix-hacks.patch;
+    lib.optional enableNixHacks ./nix-hacks.patch ++ [ ./provided-deps.patch ];
 
   # Bazel expects several utils to be available in Bash even without PATH. Hence this hack.
 
